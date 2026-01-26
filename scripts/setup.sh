@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly PYTHON_VERSION="3.14.2"
+readonly PYTHON_VERSION="3.13.11"
 readonly PROJECT_NAME="robot-flower-uv-env"
 readonly HIDDEN_ROOT="${HOME}/hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"

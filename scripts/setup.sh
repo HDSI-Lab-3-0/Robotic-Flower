@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-declare -r PYTHON_VERSION="3.12.12"
-declare -r UV_VERSION="0.9.26"
-declare -r PROJECT_NAME="robot-flower"
-declare -r HIDDEN_ROOT="${HOME}/hidden"
-declare -r PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
-declare -r PUBLIC_DIR="${HOME}/${PROJECT_NAME}"
-declare -r FINAL_CMD_PATH="${HOME}/.local/bin/final-version"
+readonly PYTHON_VERSION="3.12.12"
+readonly UV_VERSION="0.9.26"
+readonly PROJECT_NAME="robot-flower-uv-env"
+readonly HIDDEN_ROOT="${HOME}/hidden"
+readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
+readonly PUBLIC_DIR="${HOME}/${PROJECT_NAME}"
+readonly FINAL_CMD_PATH="${HOME}/.local/bin/final-version"
 
 APT_PACKAGES=(
     build-essential

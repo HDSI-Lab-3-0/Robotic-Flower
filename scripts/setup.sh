@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly PYTHON_VERSION="3.12.12"
+readonly PYTHON_VERSION="3.14.2"
 readonly PROJECT_NAME="robot-flower-uv-env"
 readonly HIDDEN_ROOT="${HOME}/hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
@@ -27,9 +27,9 @@ APT_PACKAGES=(
 DEPENDENCIES=(
     "tensorflow==2.20.0"
     "opencv-python==4.13.0.90"
-    "xarm==0.0.4"
+    "xarm==1.16.0"
     "hidapi==0.15.0"
-    "numpy==1.26.4"
+    "numpy==2.4.1"
     "scikit-learn==1.8.0"
 )
 

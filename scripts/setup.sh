@@ -71,12 +71,14 @@ install_uv() {
     fi
 
     if [[ -z "${current_version}" ]]; then
-        log "Installing latest uv via pip..."
+        log "Installing latest uv via Astral installer..."
     else
-        log "Upgrading uv to the latest release via pip..."
+        log "Updating uv to the latest release via Astral installer (current: ${current_version})..."
     fi
 
-    python3 -m pip install --user --upgrade uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ensure_path
+    hash -r 2>/dev/null || true
 
     command -v uv >/dev/null 2>&1 || fail "uv installation failed."
 }

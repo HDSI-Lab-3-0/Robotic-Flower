@@ -3,7 +3,6 @@
 set -euo pipefail
 
 readonly PYTHON_VERSION="3.12.12"
-readonly UV_VERSION="0.9.26"
 readonly PROJECT_NAME="robot-flower-uv-env"
 readonly HIDDEN_ROOT="${HOME}/hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
@@ -71,12 +70,13 @@ install_uv() {
         current_version=""
     fi
 
-    if [[ "${current_version}" != "${UV_VERSION}" ]]; then
-        log "Installing uv ${UV_VERSION} via the official installer..."
-        curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --version "v${UV_VERSION}"
+    if [[ -z "${current_version}" ]]; then
+        log "Installing latest uv via pip..."
     else
-        log "uv ${UV_VERSION} already installed."
+        log "Upgrading uv to the latest release via pip..."
     fi
+
+    python3 -m pip install --user --upgrade uv
 
     command -v uv >/dev/null 2>&1 || fail "uv installation failed."
 }

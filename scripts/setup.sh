@@ -178,8 +178,8 @@ rm -f "${FINAL_CMD_PATH}"
 cat > "${FINAL_CMD_PATH}" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-SOURCE_DIR="${PROJECT_DIR}"
-TARGET_DIR="${PUBLIC_DIR}"
+SOURCE_DIR="__PROJECT_DIR__"
+TARGET_DIR="__PUBLIC_DIR__"
 
 log() {
     printf '[INFO] %s\n' "$1"
@@ -208,6 +208,10 @@ fi
 printf '[INFO] Copied robotic flower env to %s\n' "${PUBLIC_DIR}"
 printf '[INFO] Use uv commands inside the copied directory, e.g.: cd %s && uv run python smile_detection_robot.py\n' "${PUBLIC_DIR}"
 EOF
+sed -i '' \
+    -e "s|__PROJECT_DIR__|${PROJECT_DIR}|g" \
+    -e "s|__PUBLIC_DIR__|${PUBLIC_DIR}|g" \
+    "${FINAL_CMD_PATH}"
 chmod +x "${FINAL_CMD_PATH}"
 
 log "Hidden environment ready at ${PROJECT_DIR}."

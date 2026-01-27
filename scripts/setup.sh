@@ -42,6 +42,24 @@ log() {
     printf '[INFO] %s\n' "$1"
 }
 
+source_shell_rc() {
+    local shell_name rc_path
+    shell_name="$(basename "${SHELL:-}")"
+    case "${shell_name}" in
+        bash) rc_path="${HOME}/.bashrc" ;;
+        zsh) rc_path="${HOME}/.zshrc" ;;
+        *) rc_path="${HOME}/.profile" ;;
+    esac
+
+    if [[ -f "${rc_path}" ]]; then
+        # shellcheck disable=SC1090
+        . "${rc_path}"
+        log "Reloaded shell configuration from ${rc_path}"
+    else
+        log "Skipping shell reload; ${rc_path} not found"
+    fi
+}
+
 fail() {
     printf '[ERROR] %s\n' "$1" >&2
     exit 1
@@ -98,6 +116,7 @@ sudo apt-get install -y "${APT_PACKAGES[@]}"
 
 ensure_path
 persist_local_bin_path
+source_shell_rc
 
 log "Ensuring hidden workspace root exists..."
 mkdir -p "${HIDDEN_ROOT}"
@@ -153,13 +172,20 @@ for dep in "${DEPENDENCIES[@]}"; do
 done
 
 log "Environment ready at ${PROJECT_DIR}."
-log "Installing final-version helper command..."
+log "Installing final-version helper command (will overwrite any existing copy)..."
 mkdir -p "$(dirname "${FINAL_CMD_PATH}")"
+rm -f "${FINAL_CMD_PATH}"
 cat > "${FINAL_CMD_PATH}" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
 SOURCE_DIR="${PROJECT_DIR}"
 TARGET_DIR="${PUBLIC_DIR}"
+
+log() {
+    printf '[INFO] %s\n' "$1"
+}
+
+log "Preparing to refresh public project copy..."
 
 if [[ ! -d "${PROJECT_DIR}" ]]; then
     printf '[ERROR] Hidden project not found at %s\n' "${PROJECT_DIR}" >&2
@@ -167,10 +193,18 @@ if [[ ! -d "${PROJECT_DIR}" ]]; then
 fi
 
 if [[ -d "${PUBLIC_DIR}" ]]; then
+    log "Removing existing directory at ${PUBLIC_DIR}"
     rm -rf "${PUBLIC_DIR}"
 fi
 
-cp -R "${PROJECT_DIR}" "${PUBLIC_DIR}"
+log "Copying project files (this may take a minute)..."
+if command -v rsync >/dev/null 2>&1; then
+    rsync -a --delete "${PROJECT_DIR}/" "${PUBLIC_DIR}/"
+else
+    mkdir -p "${PUBLIC_DIR}"
+    cp -a "${PROJECT_DIR}/." "${PUBLIC_DIR}/"
+fi
+
 printf '[INFO] Copied robotic flower env to %s\n' "${PUBLIC_DIR}"
 printf '[INFO] Use uv commands inside the copied directory, e.g.: cd %s && uv run python smile_detection_robot.py\n' "${PUBLIC_DIR}"
 EOF

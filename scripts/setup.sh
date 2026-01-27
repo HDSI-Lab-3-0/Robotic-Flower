@@ -31,7 +31,8 @@ APT_PACKAGES=(
 DEPENDENCIES=(
     "tensorflow==2.20.0"
     "opencv-python==4.13.0.90"
-    "xarm==1.16.0"
+    "xarm==0.0.4"
+    "xarm-python-sdk==1.17.3"
     "hidapi==0.15.0"
     "numpy==2.4.1"
     "scikit-learn==1.8.0"

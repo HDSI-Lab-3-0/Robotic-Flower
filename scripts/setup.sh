@@ -73,6 +73,9 @@ persist_local_bin_path() {
                     printf '\n# Added by %s setup to expose final-version command\n' "${PROJECT_NAME}"
                     printf '%s\n' "${export_line}"
                 } >> "${rc}"
+                log "Appended PATH export to ${rc}"
+            else
+                log "PATH export already present in ${rc}"
             fi
             updated=1
         fi
@@ -83,6 +86,7 @@ persist_local_bin_path() {
             printf '# Added by %s setup to expose final-version command\n' "${PROJECT_NAME}"
             printf '%s\n' "${export_line}"
         } >> "${HOME}/.profile"
+        log "Created ${HOME}/.profile with PATH export"
     fi
 }
 

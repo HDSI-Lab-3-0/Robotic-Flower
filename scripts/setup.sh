@@ -181,7 +181,7 @@ set -euo pipefail
 readonly PROJECT_NAME="robot-flower"
 readonly HIDDEN_ROOT="${HOME}/.hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
-readonly PUBLIC_DIR="${HOME}/${PROJECT_NAME}"
+readonly PUBLIC_DIR="${HOME}/Desktop/${PROJECT_NAME}"
 
 log() {
     printf '[INFO] %s\n' "$1"

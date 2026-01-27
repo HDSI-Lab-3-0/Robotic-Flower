@@ -56,6 +56,36 @@ ensure_path() {
     esac
 }
 
+persist_local_bin_path() {
+    local export_line='export PATH="$HOME/.local/bin:$PATH"'
+    local rc_files=(
+        "${HOME}/.bashrc"
+        "${HOME}/.bash_profile"
+        "${HOME}/.profile"
+        "${HOME}/.zshrc"
+    )
+    local updated=0
+
+    for rc in "${rc_files[@]}"; do
+        if [[ -f "${rc}" ]]; then
+            if ! grep -Fq "${export_line}" "${rc}"; then
+                {
+                    printf '\n# Added by %s setup to expose final-version command\n' "${PROJECT_NAME}"
+                    printf '%s\n' "${export_line}"
+                } >> "${rc}"
+            fi
+            updated=1
+        fi
+    done
+
+    if [[ "${updated}" -eq 0 ]]; then
+        {
+            printf '# Added by %s setup to expose final-version command\n' "${PROJECT_NAME}"
+            printf '%s\n' "${export_line}"
+        } >> "${HOME}/.profile"
+    fi
+}
+
 log "Updating apt package index..."
 sudo apt-get update
 
@@ -63,6 +93,7 @@ log "Installing build prerequisites (may take a moment)..."
 sudo apt-get install -y "${APT_PACKAGES[@]}"
 
 ensure_path
+persist_local_bin_path
 
 log "Ensuring hidden workspace root exists..."
 mkdir -p "${HIDDEN_ROOT}"

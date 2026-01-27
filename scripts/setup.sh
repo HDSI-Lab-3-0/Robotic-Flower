@@ -175,7 +175,7 @@ log "Environment ready at ${PROJECT_DIR}."
 log "Installing final-version helper command (will overwrite any existing copy)..."
 mkdir -p "$(dirname "${FINAL_CMD_PATH}")"
 rm -f "${FINAL_CMD_PATH}"
-cat > "${FINAL_CMD_PATH}" <<EOF
+cat > "${FINAL_CMD_PATH}" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 SOURCE_DIR="${PROJECT_DIR}"

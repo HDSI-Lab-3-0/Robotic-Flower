@@ -3,13 +3,15 @@
 set -euo pipefail
 
 readonly PYTHON_VERSION="3.13.11"
-readonly PROJECT_NAME="robot-flower-uv-env"
-readonly HIDDEN_ROOT="${HOME}/hidden"
+readonly PROJECT_NAME="robot-flower"
+readonly HIDDEN_ROOT="${HOME}/.hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
 readonly PUBLIC_DIR="${HOME}/${PROJECT_NAME}"
 readonly FINAL_CMD_PATH="${HOME}/.local/bin/final-version"
 
 export UV_PYTHON_VERSION="${PYTHON_VERSION}"
+export UV_PYTHON="cpython@${PYTHON_VERSION}"
+export UV_PROJECT_ENVIRONMENT="${PROJECT_DIR}/.venv"
 
 APT_PACKAGES=(
     build-essential
@@ -64,6 +66,11 @@ ensure_path
 log "Ensuring hidden workspace root exists..."
 mkdir -p "${HIDDEN_ROOT}"
 
+if [[ -d "${PROJECT_DIR}" ]]; then
+    log "Removing existing project directory at ${PROJECT_DIR}..."
+    rm -rf "${PROJECT_DIR}"
+fi
+
 install_uv() {
     local current_version
     if command -v uv >/dev/null 2>&1; then
@@ -90,10 +97,6 @@ UV_BIN="$(command -v uv)"
 
 log "Ensuring CPython ${PYTHON_VERSION} is available via uv..."
 "${UV_BIN}" python install "${PYTHON_VERSION}"
-
-if [[ -d "${PROJECT_DIR}" ]]; then
-    fail "${PROJECT_DIR} already exists. Move or remove it, then rerun the script."
-fi
 
 log "Initializing uv project at ${PROJECT_DIR}..."
 "${UV_BIN}" init "${PROJECT_DIR}"

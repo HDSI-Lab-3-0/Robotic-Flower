@@ -9,6 +9,8 @@ readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
 readonly PUBLIC_DIR="${HOME}/${PROJECT_NAME}"
 readonly FINAL_CMD_PATH="${HOME}/.local/bin/final-version"
 
+export UV_PYTHON_VERSION="${PYTHON_VERSION}"
+
 APT_PACKAGES=(
     build-essential
     curl

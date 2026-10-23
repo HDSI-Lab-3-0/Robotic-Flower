@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly PYTHON_VERSION="3.13.11"
+readonly PYTHON_VERSION="3.13.17"
 readonly PROJECT_NAME="robot-flower"
 readonly HIDDEN_ROOT="${HOME}/.hidden"
 readonly PROJECT_DIR="${HIDDEN_ROOT}/${PROJECT_NAME}"
@@ -29,13 +29,13 @@ APT_PACKAGES=(
 )
 
 DEPENDENCIES=(
-    "tensorflow==2.20.0"
-    "opencv-python==4.13.0.90"
+    "tensorflow==2.21.0"
+    "opencv-python==4.14.0.94"
     "xarm==0.0.4"
     "xarm-python-sdk==1.17.3"
     "hidapi==0.15.0"
-    "numpy==2.4.1"
-    "scikit-learn==1.8.0"
+    "numpy==2.5.4"
+    "scikit-learn==1.9.1"
 )
 
 log() {
